@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  rest-app:
+    container_name: rest-app
+    build:
+      context: .
+      dockerfile: rest-x.dockerfile
+    ports:
+    - "8181:8080"
+    networks:
+      - rest_app_network
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: Secret
+      POSTGRES_USER: postgres
+      POSTGRES_DB: restappdb
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+    ports:
+    - "5432:5432"
+    networks:
+      - rest_app_network
+
+networks:
+  rest_app_network:
+    driver: bridge
