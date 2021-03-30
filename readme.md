@@ -1,4 +1,4 @@
-#A demo app to play with Docker
+# A demo app to play with Docker
 
 ### How to run it?
 Open up a terminal and type:
