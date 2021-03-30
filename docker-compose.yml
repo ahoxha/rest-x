@@ -9,7 +9,7 @@ services:
     ports:
     - "8181:8080"
     networks:
-      - rest_app_network
+      - rest.app.network
 
   postgres:
     container_name: postgres
@@ -23,8 +23,8 @@ services:
     ports:
     - "5432:5432"
     networks:
-      - rest_app_network
+      - rest.app.network
 
 networks:
-  rest_app_network:
+  rest.app.network:
     driver: bridge

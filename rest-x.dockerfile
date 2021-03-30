@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11
+FROM adoptopenjdk:11
 
 LABEL author="Armend Hoxha"
 
