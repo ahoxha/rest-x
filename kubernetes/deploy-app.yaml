@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-x-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: rest-x
+  template:
+    metadata:
+      labels:
+        app: rest-x
+    spec:
+      containers:
+        - name: rest-x
+          image: hoxhaa/rest-app:latest
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2000Mi"
+            requests:
+              cpu: "100m"
+              memory: "1200Mi"
+          ports:
+            - containerPort: 8080
+              name: service
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /hello
+              port: service
+              scheme: HTTP
+            successThreshold: 1
+            failureThreshold: 30
+            initialDelaySeconds: 60
+            periodSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /hello
+              port: service
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - sleep
+                  - "15"
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /hello
+              port: service
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
